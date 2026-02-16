@@ -42,7 +42,7 @@ El proyecto permite la gestión de tareas del personal y un control riguroso del
 Abre tu terminal y ejecuta:
 
 ```bash
-git clone <URL_DE_TU_REPOSITORIO_EN_GITHUB>
+git clone <https://github.com/mauucode/Actividad-4.git>
 cd <NOMBRE_DE_LA_CARPETA_DEL_PROYECTO>
 ```
 ### 2. Instalar Dependencias
