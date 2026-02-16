@@ -1,0 +1,29 @@
+name: Tesla OS Pipeline
+
+# Esto le dice al robot que se ejecute cada vez que hagas un "push" a la rama main (o master)
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Clonar el código
+      uses: actions/checkout@v3
+
+    - name: ⚙️ Configurar Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: 📦 Instalar dependencias
+      run: npm install
+
+    - name: 🧪 Ejecutar Pruebas Unitarias (Jest)
+      env:
+        # Aquí GitHub inyecta los secretos que guardaste en la configuración
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      run: npm test
