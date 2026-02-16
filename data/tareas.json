@@ -1,0 +1,75 @@
+[
+  {
+    "id": 1770514871354,
+    "title": "limpieza auto ",
+    "createdAt": "2/7/2026",
+    "assignedTo": "Jorge",
+    "createdBy": "Elon Musk",
+    "status": "Completada",
+    "assignmentArea": "General"
+  },
+  {
+    "id": 1770515508832,
+    "title": "revisar autos X",
+    "createdAt": "2/7/2026",
+    "assignedTo": "Diego",
+    "createdBy": "Elon Musk",
+    "status": "Completada",
+    "assignmentArea": "General",
+    "completedAt": "2/8/2026"
+  },
+  {
+    "id": 1770517678068,
+    "title": "limpieza auto rojo prueba",
+    "createdAt": "2/7/2026",
+    "assignedTo": "Diego",
+    "createdBy": "Elon Musk",
+    "status": "Pendiente",
+    "assignmentArea": "General"
+  },
+  {
+    "id": 1770595192267,
+    "title": "mantenimiento X",
+    "createdAt": "2/8/2026",
+    "assignedTo": "Diego",
+    "createdBy": "Elon Musk",
+    "status": "Pendiente",
+    "assignmentArea": "General"
+  },
+  {
+    "id": 1770595390775,
+    "title": "mtmto",
+    "createdAt": "2/8/2026",
+    "assignedTo": "Laura Mtz",
+    "createdBy": "Elon Musk",
+    "status": "Pendiente",
+    "assignmentArea": "General"
+  },
+  {
+    "id": 1770595405752,
+    "title": "mtmto",
+    "createdAt": "2/8/2026",
+    "assignedTo": "Laura Mtz",
+    "createdBy": "Elon Musk",
+    "status": "Pendiente",
+    "assignmentArea": "General"
+  },
+  {
+    "id": 1770595432090,
+    "title": "adsasdads",
+    "createdAt": "2/8/2026",
+    "assignedTo": "Jorge",
+    "createdBy": "Elon Musk",
+    "status": "Pendiente",
+    "assignmentArea": "General"
+  },
+  {
+    "id": 1770595511518,
+    "title": "sdasda",
+    "createdAt": "2/8/2026",
+    "assignedTo": "Jorge",
+    "createdBy": "Elon Musk",
+    "status": "Pendiente",
+    "assignmentArea": "General"
+  }
+]

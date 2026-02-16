@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla OS | Inventario Global</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos Base (Reutilizados del Dashboard) */
+        body { font-family: 'Roboto', sans-serif; background-color: #111; color: #fff; margin: 0; }
+        .dashboard-container { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: #000; border-bottom: 1px solid #333; }
+        
+        /* Panel Formulario */
+        .admin-panel { background-color: #1c1c1c; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #3b82f6; }
+        .input-group { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr auto; gap: 10px; align-items: center; margin-top: 15px;}
+        .tesla-input { padding: 10px; border-radius: 4px; border: 1px solid #444; background: #000; color: #fff; outline: none; width: 100%; box-sizing: border-box; }
+        .btn-crear { padding: 10px 20px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; height: 100%;}
+        .btn-crear:hover { background: #2563eb; }
+
+        /* Tabla de Productos */
+        .table-container { background-color: #181818; border-radius: 8px; overflow: hidden; border: 1px solid #333; }
+        .tasks-table { width: 100%; border-collapse: collapse; }
+        .tasks-table th, .tasks-table td { padding: 15px; text-align: left; border-bottom: 1px solid #2a2a2a; }
+        .tasks-table th { background-color: #222; color: #aaa; text-transform: uppercase; font-size: 0.85rem; }
+        
+        .stock-badge { padding: 4px 8px; border-radius: 12px; font-weight: bold; font-size: 0.85rem; }
+        .stock-ok { background: #10b98122; color: #10b981; border: 1px solid #10b981; }
+        .stock-low { background: #ef444422; color: #ef4444; border: 1px solid #ef4444; }
+
+        /* Responsivo Móvil */
+        .mobile-cards { display: none; }
+        @media (max-width: 768px) {
+            .dashboard-container { padding: 15px; }
+            .table-container { display: none !important; }
+            .mobile-cards { display: flex !important; flex-direction: column; gap: 15px; margin-top: 20px; }
+            .task-card { background: #1c1c1c; border: 1px solid #333; border-radius: 8px; padding: 15px; }
+            .input-group { grid-template-columns: 1fr; }
+        }
+
+        /* Modales */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 9999; display: none; }
+        .modal-box { background: #1c1c1c; padding: 30px; border-radius: 12px; border: 1px solid #333; width: 90%; max-width: 400px; }
+        .btn-cancel { background: transparent; border: 1px solid #666; color: #ccc; padding: 10px; cursor: pointer; border-radius: 4px; flex:1;}
+        .btn-save { background: #3b82f6; border: none; color: white; padding: 10px; cursor: pointer; border-radius: 4px; flex:1;}
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="img/logo.png" alt="Tesla" style="height: 18px;">
+            <span style="border-left: 1px solid #444; padding-left: 10px; font-size: 0.9rem; color:#3b82f6; font-weight:bold;">Inventario MongoDB</span>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="window.location.href='dashboard.html'" style="background:none; border:1px solid #444; color:#fff; padding: 5px 12px; border-radius:4px; font-size:0.8rem; cursor:pointer;">Volver a Tareas</button>
+            <button onclick="logout()" style="background:none; border:1px solid #444; color:#fff; padding: 5px 12px; border-radius:4px; font-size:0.8rem; cursor:pointer;">Salir</button>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <h2>Gestión de Refacciones Tesla</h2>
+        
+        <div class="admin-panel">
+            <h3 style="margin:0; color:#3b82f6;">+ Registrar Pieza</h3>
+            <div class="input-group">
+                <input type="text" id="p-nombre" class="tesla-input" placeholder="Nombre (Ej. Batería 100kWh)">
+                <input type="text" id="p-sku" class="tesla-input" placeholder="SKU (Ej. BAT-100)">
+                <select id="p-categoria" class="tesla-input">
+                    <option value="" disabled selected>Categoría...</option>
+                    <option value="Energía">Energía</option>
+                    <option value="Motor">Motor</option>
+                    <option value="Carrocería">Carrocería</option>
+                    <option value="Electrónica">Electrónica</option>
+                </select>
+                <input type="number" id="p-stock" class="tesla-input" placeholder="Stock">
+                <input type="number" id="p-precio" class="tesla-input" placeholder="Precio ($)">
+                <button onclick="crearProducto()" class="btn-crear">Guardar</button>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="tasks-table">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Stock</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-productos"></tbody>
+            </table>
+        </div>
+
+        <div id="mobile-cards" class="mobile-cards"></div>
+    </main>
+
+    <div id="modal-editar" class="modal-overlay">
+        <div class="modal-box">
+            <h3 style="margin-top:0;">Editar Producto</h3>
+            <input type="hidden" id="edit-id">
+            <label style="color:#aaa; font-size:0.9rem;">Nombre:</label>
+            <input type="text" id="edit-nombre" class="tesla-input" style="margin-bottom:10px;">
+            <label style="color:#aaa; font-size:0.9rem;">Stock:</label>
+            <input type="number" id="edit-stock" class="tesla-input" style="margin-bottom:10px;">
+            <label style="color:#aaa; font-size:0.9rem;">Precio ($):</label>
+            <input type="number" id="edit-precio" class="tesla-input" style="margin-bottom:20px;">
+            
+            <div style="display:flex; gap:10px;">
+                <button onclick="document.getElementById('modal-editar').style.display='none'" class="btn-cancel">Cancelar</button>
+                <button onclick="guardarEdicion()" class="btn-save">Actualizar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:3000/api';
+        const token = localStorage.getItem('teslaToken');
+        const role = localStorage.getItem('teslaRole');
+        let inventario = [];
+
+        // 1. SEGURIDAD FRONTEND
+        if (!token || role !== 'admin') {
+            alert("Acceso denegado. Solo administradores pueden ver el inventario.");
+            window.location.href = 'dashboard.html';
+        }
+
+        // 2. READ (Obtener productos de MongoDB)
+        async function cargarInventario() {
+            try {
+                const res = await fetch(`${API}/productos`, { headers: { 'Authorization': `Bearer ${token}` } });
+                if (res.ok) {
+                    inventario = await res.json();
+                    renderInventario();
+                }
+            } catch (error) { console.error("Error cargando base de datos", error); }
+        }
+
+        function renderInventario() {
+            const tbody = document.getElementById('lista-productos');
+            const mobile = document.getElementById('mobile-cards');
+            tbody.innerHTML = ''; mobile.innerHTML = '';
+
+            inventario.forEach(p => {
+                const stockClass = p.stock > 5 ? 'stock-ok' : 'stock-low';
+                const formatoDinero = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(p.precio);
+
+                const acciones = `
+                    <button onclick="abrirModal('${p._id}')" style="background:none; border:none; color:#3b82f6; cursor:pointer; font-size:1.2rem;" title="Editar">✎</button>
+                    <button onclick="borrarProducto('${p._id}')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:1.2rem; margin-left:10px;" title="Borrar">✖</button>
+                `;
+
+                // Fila de Tabla
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-family:monospace; color:#888;">${p.sku}</td>
+                        <td style="font-weight:bold;">${p.nombre}</td>
+                        <td>${p.categoria}</td>
+                        <td><span class="stock-badge ${stockClass}">${p.stock} un.</span></td>
+                        <td style="color:#10b981;">${formatoDinero}</td>
+                        <td>${acciones}</td>
+                    </tr>`;
+
+                // Tarjeta Móvil
+                mobile.innerHTML += `
+                    <div class="task-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:10px; margin-bottom:10px;">
+                            <span style="font-family:monospace; color:#888;">${p.sku}</span>
+                            <div>${acciones}</div>
+                        </div>
+                        <h3 style="margin:0 0 10px 0; color:#fff;">${p.nombre}</h3>
+                        <p style="margin:5px 0; color:#ccc; font-size:0.9rem;">Categoría: ${p.categoria}</p>
+                        <p style="margin:5px 0;"><span class="stock-badge ${stockClass}">Stock: ${p.stock}</span></p>
+                        <p style="margin:5px 0; color:#10b981; font-weight:bold;">${formatoDinero}</p>
+                    </div>`;
+            });
+        }
+
+        // 3. CREATE (Insertar a MongoDB)
+        async function crearProducto() {
+            const nombre = document.getElementById('p-nombre').value;
+            const sku = document.getElementById('p-sku').value;
+            const categoria = document.getElementById('p-categoria').value;
+            const stock = document.getElementById('p-stock').value;
+            const precio = document.getElementById('p-precio').value;
+
+            if(!nombre || !sku || !categoria || !stock || !precio) return alert("Llena todos los campos.");
+
+            const res = await fetch(`${API}/productos`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ nombre, sku, categoria, stock: Number(stock), precio: Number(precio) })
+            });
+
+            if (res.ok) {
+                document.querySelectorAll('#admin-panel input, #admin-panel select').forEach(el => el.value = '');
+                cargarInventario();
+            } else {
+                const error = await res.json();
+                alert(error.message);
+            }
+        }
+
+        // 4. UPDATE (Editar en MongoDB)
+        function abrirModal(id) {
+            const prod = inventario.find(p => p._id === id);
+            document.getElementById('edit-id').value = prod._id;
+            document.getElementById('edit-nombre').value = prod.nombre;
+            document.getElementById('edit-stock').value = prod.stock;
+            document.getElementById('edit-precio').value = prod.precio;
+            document.getElementById('modal-editar').style.display = 'flex';
+        }
+
+        async function guardarEdicion() {
+            const id = document.getElementById('edit-id').value;
+            const nombre = document.getElementById('edit-nombre').value;
+            const stock = document.getElementById('edit-stock').value;
+            const precio = document.getElementById('edit-precio').value;
+
+            await fetch(`${API}/productos/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ nombre, stock: Number(stock), precio: Number(precio) })
+            });
+
+            document.getElementById('modal-editar').style.display = 'none';
+            cargarInventario();
+        }
+
+        // 5. DELETE (Borrar de MongoDB)
+        async function borrarProducto(id) {
+            if(confirm("¿Estás seguro de eliminar esta pieza permanentemente de la base de datos?")) {
+                await fetch(`${API}/productos/${id}`, { 
+                    method: 'DELETE', 
+                    headers: { 'Authorization': `Bearer ${token}` } 
+                });
+                cargarInventario();
+            }
+        }
+
+        function logout() { localStorage.clear(); window.location.href='login.html'; }
+
+        // Inicializar
+        cargarInventario();
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "actividad-3-desarrollofullstack",
+  "version": "1.0.0",
+  "description": "Impementacion de Lista de Traeas con CRUD en JS",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mauucode/Actividad-2-DesarrolloFullStack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mauucode/Actividad-2-DesarrolloFullStack/issues"
+  },
+  "homepage": "https://github.com/mauucode/Actividad-2-DesarrolloFullStack#readme",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.2.1"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "supertest": "^7.2.2"
+  }
+}

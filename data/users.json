@@ -1,0 +1,51 @@
+[
+  {
+    "id": 1770505497231,
+    "username": "admin",
+    "password": "$2b$10$rNcYJQfHQiOIYWk7.GoAje/4mVuBRIpBtcCi.JiYSd6PD0j1c5syO",
+    "name": "Elon Musk",
+    "role": "admin"
+  },
+  {
+    "id": 1770513541550,
+    "username": "Laura",
+    "password": "$2b$10$FAICQRTeUYLJLpuFkMeHNO.7yUbcnzsRB2eOD1Jo1Qu8RggHCsFxq",
+    "name": "Laura Mtz",
+    "role": "user"
+  },
+  {
+    "id": 1770514821577,
+    "username": "jorge",
+    "password": "$2b$10$vXyXXduPwtP9FQ7ouVY5v.IWvEa3V2.3pLi0qN64R5iuje2gY.MJq",
+    "name": "Jorge",
+    "role": "user"
+  },
+  {
+    "id": 1770515490449,
+    "username": "diego",
+    "password": "$2b$10$DZcJps4FzZoyHCNLezbqEuB1WTovjHGmWqjPGCHl8vC9PV12qUGfW",
+    "name": "Diego",
+    "role": "user"
+  },
+  {
+    "id": 1770595806291,
+    "username": "mau",
+    "password": "$2b$10$/P2HxjvFRW/gSHGlbklJoOW6wPPej8TYTUpXgyGwVsMbTUrPyogua",
+    "name": "Mauricio",
+    "role": "user"
+  },
+  {
+    "id": 1770596529075,
+    "username": "johan",
+    "password": "$2b$10$fs5aaHt137ybKxpPl1eLeeIYufHt9a7brx.dJKIy/p0PlIv8TH4lO",
+    "name": "Johan",
+    "role": "user"
+  },
+  {
+    "id": 1771198273488,
+    "name": "Gerardo Punto",
+    "username": "Gerardo",
+    "password": "$2b$10$MRcSrx5JNvKHqmTqgDNrF.WrzyKcaWtwW0XoIXh5VhogCYjgw3AeC",
+    "role": "user"
+  }
+]
